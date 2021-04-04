@@ -137,7 +137,7 @@ void setup() {
 
   display.display();
 
-  sing(0);
+  music(0);
   delay(1000);
 }
 
@@ -243,7 +243,7 @@ void loop() {
     if (((current_time - aux_time) > 30000)) { // next lines happens every 30000ms = 30 seconds
       aux_time = current_time;
       enem_vel--;
-      jumpduration--;//negative bc we are going in the direction -x so is not raising
+      jumpduration--;//negative bc we are going in the direction -x so is not raimusic
     }
 
     ///////////check collision/////////////
@@ -305,7 +305,7 @@ void loop() {
 
     if (lives == 0) {
       delay(500);
-      sing(1);
+      music(1);
       dead = 1;
     }
   }
@@ -357,29 +357,29 @@ void reinicio()
   state = 0;
 }
 
-void sing(int song) {
+void music(int song) {
   if (song == 0) {
     int size = sizeof(melody) / sizeof(int);
     for (int thisNote = 0; thisNote < size; thisNote++) {
       int noteDuration = 1000 / tempo[thisNote];
-      buzz(melodyPin, melody[thisNote], noteDuration);
+      buzzer(melodyPin, melody[thisNote], noteDuration);
       int pauseBetweenNotes = noteDuration * 1.30;
       delay(pauseBetweenNotes);
-      buzz(melodyPin, 0, noteDuration);
+      buzzer(melodyPin, 0, noteDuration);
     }
   } else if (song == 1) {
     int size = 13;
     for (int thisNote = 0; thisNote < size; thisNote++) {
       int noteDuration = 1000 / tempo[thisNote];
-      buzz(melodyPin, melody[thisNote], noteDuration);
+      buzzer(melodyPin, melody[thisNote], noteDuration);
       int pauseBetweenNotes = noteDuration * 1.30;
       delay(pauseBetweenNotes);
-      buzz(melodyPin, 0, noteDuration);
+      buzzer(melodyPin, 0, noteDuration);
     }
   }
 }
 
-void buzz(int targetPin, long frequency, long length) {
+void buzzer(int targetPin, long frequency, long length) {
   digitalWrite(13, HIGH);
   long delayValue = 1000000 / frequency / 2;
   long numCycles = frequency * length / 1000;
