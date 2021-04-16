@@ -14,9 +14,9 @@ Adafruit_SSD1306 display(128, 64, &Wire, 4);
 #define bendsound 1500
 
 
-//enemies
-int enemie1_x = 130; //el recorrido es de 130 a -30 es decir 160 entonces la otra deberia ir a 160+128 para ir equidistantes pero si lo altero un poco es más dificil y queda menos medido y mas natural
-int enemie2_x = 240;
+//enemys
+int enemy1_x = 130; //el recorrido es de 130 a -30 es decir 160 entonces la otra deberia ir a 160+128 para ir equidistantes pero si lo altero un poco es más dificil y queda menos medido y mas natural
+int enemy2_x = 240;
 uint8_t jumpduration = 11;
 int8_t enem_vel = -5;
 unsigned long current_time = 0;
@@ -85,7 +85,7 @@ const unsigned char PROGMEM mario_jump[] = {
 const unsigned char PROGMEM misile[] = {
   0x3, 0xF3, 0x20, 0xE, 0xC, 0x60, 0x3D, 0xFB, 0xA0, 0x77, 0xFF, 0x40, 0x67, 0xFF, 0x80, 0xA7, 0xFF, 0x40, 0x87, 0x9F, 0x20, 0xCF, 0x8F, 0xC0, 0xFC, 0x8F, 0x0, 0x78, 0x1F, 0x60, 0x78, 0x7F, 0x80, 0x3F, 0xFF, 0xA0, 0xF, 0xFF, 0x40, 0x3, 0xF3, 0x20,
 };
-const unsigned char PROGMEM enemie[] = {
+const unsigned char PROGMEM enemy[] = {
   0x3, 0xE0, 0x0, 0x4, 0x10, 0x0, 0x28, 0xA, 0x0, 0x10, 0x4, 0x0, 0x28, 0xA, 0x0, 0x4C, 0x19, 0x0, 0x4A, 0x29, 0x0, 0x8F, 0x78, 0x80, 0x86, 0x30, 0x80, 0x80, 0x0, 0x80, 0xC0, 0x1, 0x80, 0x7F, 0xFF, 0x0, 0x8, 0x8, 0x0, 0x38, 0xE, 0x0, 0x7C, 0x1F, 0x0, 0x7F, 0xFF, 0x0, 0x3E, 0x3E, 0x0,
 };
 const unsigned char PROGMEM cloud[] = {
@@ -208,16 +208,16 @@ void loop() {
       lock = 1;
     }
     if (rando == 0) {
-      display.drawBitmap(enemie1_x, 30, misile, 19, 14, 1);
+      display.drawBitmap(enemy1_x, 30, misile, 19, 14, 1);
 
     } else {
-      display.drawBitmap(enemie1_x, 47, enemie, 17, 17, 1);
+      display.drawBitmap(enemy1_x, 47, enemy, 17, 17, 1);
     }
-    if (enemie1_x <= -30) { //not so big to be displayed the change, and not so small because is not changing 1 by 1 and could not be raised.
+    if (enemy1_x <= -30) { //not so big to be displayed the change, and not so small because is not changing 1 by 1 and could not be raised.
       lock = 0;
-      enemie1_x = 200;
+      enemy1_x = 200;
     }
-    enemie1_x = enemie1_x + enem_vel;
+    enemy1_x = enemy1_x + enem_vel;
 
     ////////////////segundo enemigo/////////////
     if (lock2 == 0) {
@@ -225,18 +225,18 @@ void loop() {
       lock2 = 1;
     }
     if (rando2 > 9) {
-      display.drawBitmap(enemie2_x, 48, mushroom, 19, 16, 1);
+      display.drawBitmap(enemy2_x, 48, mushroom, 19, 16, 1);
     } else if (rando2 < 5) {
-      display.drawBitmap(enemie2_x, 30, misile, 19, 14, 1);
+      display.drawBitmap(enemy2_x, 30, misile, 19, 14, 1);
     }
     else {
-      display.drawBitmap(enemie2_x, 47, enemie, 17, 17, 1);
+      display.drawBitmap(enemy2_x, 47, enemy, 17, 17, 1);
     }
-    if (enemie2_x <= -30) {
+    if (enemy2_x <= -30) {
       lock2 = 0;
-      enemie2_x = 200;
+      enemy2_x = 200;
     }
-    enemie2_x = enemie2_x + enem_vel;
+    enemy2_x = enemy2_x + enem_vel;
 
     ////////////increase speed over time/////////////
     current_time = millis();
@@ -247,7 +247,7 @@ void loop() {
     }
 
     ///////////check collision/////////////
-    if ((enemie2_x < 10) && (enemie2_x > -23) && locklives == 0) { //at -23 is out of the screen
+    if ((enemy2_x < 10) && (enemy2_x > -23) && locklives == 0) { //at -23 is out of the screen
       if (((state == 2 || state == 0) && rando2 > 9)) {
         if (lives < 5) {
           lives++;
@@ -261,7 +261,7 @@ void loop() {
         lockscore = 1;
       }
     }
-    if ((enemie1_x < 10) && (enemie1_x > -23) && locklives == 0) {
+    if ((enemy1_x < 10) && (enemy1_x > -23) && locklives == 0) {
       if (((state == 2 || state == 0) && rando == 1) || ((state == 1 || state == 0) && rando == 0)) {
         lives--;
         locklives = 1;
@@ -273,7 +273,7 @@ void loop() {
         lockscore = 1;
       }
     }
-    if ((enemie2_x < 10) && (enemie2_x > -23) && locklives == 0) {
+    if ((enemy2_x < 10) && (enemy2_x > -23) && locklives == 0) {
       if (((state == 2 || state == 0) && rando2 > 4 && rando2 < 10) || ((state == 1 || state == 0) && rando2 < 5)) {
         lives--;
         locklives = 1;
@@ -286,7 +286,7 @@ void loop() {
       }
     }
 
-    if (enemie1_x < -20 || enemie2_x < -20) {//unlock
+    if (enemy1_x < -20 || enemy2_x < -20) {//unlock
       locklives = 0;
       lockscore = 0;
     }
@@ -342,8 +342,8 @@ void reinicio()
   current_time = 0;
   lives = 1;
   score = 0;
-  enemie1_x = 130;
-  enemie2_x = 240;
+  enemy1_x = 130;
+  enemy2_x = 240;
   enem_vel = -5;
   current_time = 0;
   aux_time = 0;
